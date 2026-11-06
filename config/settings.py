@@ -180,24 +180,25 @@ REST_FRAMEWORK = {
 # --------------------------------------------------
 # EMAIL CONFIGURATION - GMAIL SMTP
 # --------------------------------------------------
-EMAIL_USER = os.getenv("EMAIL_HOST_USER")
-EMAIL_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
-if not EMAIL_USER or not EMAIL_PASSWORD:
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+EMAIL_HOST = "smtp.gmail.com"
+
+EMAIL_PORT = 587
+
+EMAIL_USE_TLS = True
+
+EMAIL_USE_SSL = False
+
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+EMAIL_TIMEOUT = 30
+
+
+if not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD:
     raise ValueError("Gmail credentials are missing from .env")
-
-DEFAULT_FROM_EMAIL = EMAIL_USER
-
-MAILERS = {
-    "default": {
-        "BACKEND": "django.core.mail.backends.smtp.EmailBackend",
-        "OPTIONS": {
-            "host": "smtp.gmail.com",
-            "port": 465,
-            "username": EMAIL_USER,
-            "password": EMAIL_PASSWORD,
-            "use_ssl": True,
-            "timeout": 30,
-        },
-    },
-}
